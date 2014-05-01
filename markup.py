@@ -14,6 +14,7 @@ except ImportError:
   import_ok = False
 
 import re
+import string
 
 colors = {
   'white': u'00',
@@ -50,7 +51,7 @@ def process_markup(data, msgtype, servername, args):
   or<MESSAGE TYPE> <channel> :<msg>
   So i'll split it by colon for now.
   '''
-  header,blurb = args.split(':')
+  header,blurb = string.split(args, ':', maxsplit=1)
 
   #first let's tag on a "greentext" modifier for lines which start with '>'
   blurb = re.sub(r'^\>', u'[green][bold]>', blurb)
