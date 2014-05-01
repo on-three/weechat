@@ -18,10 +18,10 @@ import re
 colors = {
   'white': u'00',
   'black': u'01',
-  'darkblue': u'302',
+  'darkblue': u'02',
   'green': u'03',
   'red': u'04',
-  'brown': u'305',
+  'brown': u'05',
   'purple': u'06',
   'olive': u'07',
   'yellow': u'08',
