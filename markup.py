@@ -44,6 +44,15 @@ styles = {
   'reverse' : u'\u0016',
 }
 
+def markup():
+  '''Iterator to cycle through markup keys
+  This supports autocompletion
+  '''
+  for s in styles.keys():
+    yield '[{s}]'.format(s=s)
+  for c in colors.keys():
+    yield '[{c}]'.format(c=c)
+
 def markup2code(m):
   ml = m.lower()
   if ml in styles:
@@ -83,9 +92,24 @@ def process_markup(data, msgtype, servername, args):
   args = header  + ':' + blurb
   return args
 
+def markup_autocomplete(data, buffer, command):
+  str_input = weechat.buffer_get_string(weechat.current_buffer(), "input")
+  if command == "/input complete_next":# and str_input == '':
+    last_pos = str_input.rindex('[')#fails if not found.
+    last = str_input[last_pos:]
+    first = str_input[:last_pos]
+    for m in markup():
+      if m.startswith(last) and m != last and last != "":
+        weechat.command(buffer, '/input delete_line')
+        weechat.command(buffer, "/input insert "+ first + m)
+        break 
+  return weechat.WEECHAT_RC_OK
+
  
 if __name__ == "__main__":
   if import_ok and weechat.register(SCRIPT_NAME, SCRIPT_AUTHOR, SCRIPT_VERSION, SCRIPT_LICENSE, SCRIPT_DESC, "", ""):
     weechat.hook_modifier("irc_out1_privmsg", "process_markup", "")
     weechat.hook_modifier("irc_out1_topic", "process_markup", "")
+    #attempt to autocomplete markup text in input area
+    weechat.hook_command_run('/input complete*', 'markup_autocomplete', '')
 
