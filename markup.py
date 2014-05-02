@@ -35,13 +35,35 @@ colors = {
   'gray': u'15',
 }
 
-def to_color(c):
-  if c in colors:
-    return colors[c]
-  else:
-    #default to white for bad input
-    return u'00'
+styles = {
+  'bold' :  u'\u0002',
+  'normal' : u'\u000f',
+  'underline' : u'\u001f',
+  'italic' : u'\u0009',
+  'strikethrough' : u'\u0013',
+  'reverse' : u'\u0016',
+}
 
+def markup2code(m):
+  ml = m.lower()
+  if ml in styles:
+    return styles[ml]
+  elif ml in colors:
+    return u'\u0003{0}'.format(colors[ml])
+  else:
+    return m
+
+def to_color(c):
+  cl = c.lower()
+  if cl in colors:
+    return colors[cl]
+  else:
+    #default to original
+    return c
+
+#have to precompile these regexes 'cause i want them case insensitive
+SINGLE_MARKUP_RE = re.compile(r'\[(?P<markup>\w+)\]', re.I)
+DOUBLE_MARKUP_RE = re.compile(r'\[(?P<foreground>\w+) (?P<background>\w+)\]', re.I)
 
 # Functions
 def process_markup(data, msgtype, servername, args):
@@ -55,29 +77,8 @@ def process_markup(data, msgtype, servername, args):
 
   #first let's tag on a "greentext" modifier for lines which start with '>'
   blurb = re.sub(r'^\>', u'[green][bold]>', blurb)
-
-  blurb = re.sub(r'\[bold\]', u'\u0002', blurb)
-  blurb = re.sub(r'\[reset\]', u'\u000f', blurb)
-  blurb = re.sub(r'\[underline\]', u'\u001f', blurb)
-  blurb = re.sub(r'\[italic\]', u'\u0009', blurb)
-  blurb = re.sub(r'\[strikethrough\]', u'\u0013', blurb)
-  blurb = re.sub(r'\[white\]', u'\u000300', blurb)
-  blurb = re.sub(r'\[black\]', u'\u000301', blurb)
-  blurb = re.sub(r'\[darkblue\]', u'\u000302', blurb)
-  blurb = re.sub(r'\[reverse\]', u'\u0016', blurb)
-  blurb = re.sub(r'\[green\]', u'\u000303', blurb)
-  blurb = re.sub(r'\[red\]', u'\u000304', blurb)
-  blurb = re.sub(r'\[brown\]', u'\u000305', blurb)
-  blurb = re.sub(r'\[purple\]', u'\u000306', blurb)
-  blurb = re.sub(r'\[olive\]', u'\u000307', blurb)
-  blurb = re.sub(r'\[yellow\]', u'\u000308', blurb)
-  blurb = re.sub(r'\[green\]', u'\u000309', blurb)
-  blurb = re.sub(r'\[teal\]', u'\u000310', blurb)
-  blurb = re.sub(r'\[cyan\]', u'\u000311', blurb)
-  blurb = re.sub(r'\[blue\]', u'\u000312', blurb)
-  blurb = re.sub(r'\[magenta\]', u'\u000313', blurb)
-  blurb = re.sub(r'\[darkgray\]', u'\u000314', blurb)
-  blurb = re.sub(r'\[gray\]', u'\u000315', blurb)
+  
+  blurb = re.sub(r'\[(?P<markup>\w+)\]', lambda match: u'{0}'.format(markup2code(match.group(1))), blurb)
   blurb = re.sub(r'\[(?P<foreground>\w+) (?P<background>\w+)\]', lambda match: u"\u0003{0},{1}".format(to_color(match.group(1)),to_color(match.group(2))), blurb)
   args = header  + ':' + blurb
   return args
