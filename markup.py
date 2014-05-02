@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 SCRIPT_NAME = "markup"
 SCRIPT_AUTHOR = "on-three"
 SCRIPT_VERSION = "0.0.1"
@@ -44,6 +46,33 @@ styles = {
   'reverse' : u'\u0016',
 }
 
+decorators = {
+  'note' : u'♫',#♬,♪,♩
+  'copyright' : u'©',
+  'section' : u'§',
+  'yen' : u'¥',
+  'pound' : u'£',
+  'registered' : u'®',
+  'quarter' : u'¼',
+  'half' : u'½',
+  'threequarters' : u'¾',
+  'times' : u'×',
+  'divided' : u'÷',
+  'cross' : u'†',
+  'doubleexclaimation' : u'‼',
+  'starofdavid' : u'✡',
+  'heart' : u'❤',
+  'arrow' : u'➔',
+  'sun' : u'☀',
+  'umbrella' : u'☂',
+  'radioactive' : u'☢',
+  'euro' : u'€',
+  'telephone' : u'☎',
+  'flag' : u'⚑',
+  'cut' : u'✂',
+
+}
+
 def markup():
   '''Iterator to cycle through markup keys
   This supports autocompletion
@@ -52,6 +81,8 @@ def markup():
     yield '[{s}]'.format(s=s)
   for c in colors.keys():
     yield '[{c}]'.format(c=c)
+  for d in decorators.keys():
+    yield '[{d}]'.format(d=d)
 
 def markup2code(m):
   ml = m.lower()
@@ -59,6 +90,8 @@ def markup2code(m):
     return styles[ml]
   elif ml in colors:
     return u'\u0003{0}'.format(colors[ml])
+  elif ml in decorators:
+    return decorators[ml]
   else:
     return m
 
