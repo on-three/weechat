@@ -49,6 +49,7 @@ styles = {
 decorators = {
   'note' : u'♫',#♬,♪,♩
   'copyright' : u'©',
+  'trademark' : u'™',
   'section' : u'§',
   'yen' : u'¥',
   'pound' : u'£',
