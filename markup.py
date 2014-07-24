@@ -28,7 +28,7 @@ colors = {
   u'purple': u'06',
   u'olive': u'07',
   u'yellow': u'08',
-  u'green': u'09',
+  u'lightgreen': u'09',
   u'teal': u'10',
   u'cyan': u'11',
   u'blue': u'12',
