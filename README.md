@@ -17,7 +17,7 @@ The script supports markup in user posts of the form [markup]. See the script it
 ```
 The text would then appear as follows when posted:
 
-hello
+**hello**
 
 Also note that the markup ``[bold]`` can be introduced via autocompletion. Merely typing ``[bo``+<kbd>tab</kbd> will autocomplete to ```[bold]```.
 
