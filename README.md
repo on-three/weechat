@@ -55,7 +55,7 @@ The following styles can be used. Note that not all might be supported on your c
 
 The ``[normal]`` tag will clear all previous markkup on the same line. ``[reverse]`` reverses the current foreground and background colors.
 
-#Unicode characters
+###Unicode characters
 To make it easier to include common unicode characters in posts, the following markup is supported. Each tag is replaced with its associated character when posted.
 * note : '♫'
 * copyright' : '©'
