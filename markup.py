@@ -119,8 +119,8 @@ def process_markup(data, msgtype, servername, args):
   args = args.decode('utf-8')
   header,blurb = string.split(args, u':', maxsplit=1)
 
-  #first let's tag on a "greentext" modifier for lines which start with '>'
-  blurb = re.sub(ur'^\>', u'[green]>', blurb)
+  #first let's add [green] before the FIRST '>' that occurs, no matter where
+  blurb = blurb.replace(ur'>', u'[green]>')
   
   blurb = re.sub(ur'\[(?P<markup>\w+)\]', lambda match: u'{0}'.format(markup2code(match.group(1))), blurb)
   blurb = re.sub(ur'\[(?P<foreground>\w+) (?P<background>\w+)\]', lambda match: u"\u0003{0},{1}".format(to_color(match.group(1)),to_color(match.group(2))), blurb)
